@@ -1,0 +1,6 @@
+name=t
+mode=default
+firstline=gg
+secondline=gg
+button_1=0
+button_2=0

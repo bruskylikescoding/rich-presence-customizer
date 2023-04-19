@@ -1,10 +1,11 @@
 from pypresence import Presence
 import time
 import os
-import traceback
 
 globalrpc = None
 
+if not os.path.exists("configs"):
+   os.mkdir("configs")
 def saveinconfig(config_path, string, value):
     lines = []
     added = False
@@ -114,7 +115,7 @@ def loadconfig(config_name):
     try:
         match mode:
             case "default":
-                rpc = Presence("1097539948648878223")
+                rpc = Presence("1097553838841536512")
                 big_image = "big"
                 small_image = "small"
             case "custom":
@@ -127,7 +128,7 @@ def loadconfig(config_name):
                     small_image = "gommemode"
             case __:
                 print("There is no use mode set for this config. Using default mode.")
-                rpc = Presence("1097539948648878223")
+                rpc = Presence("1097553838841536512")
     except:
         print("An error occured. Possible reasons:\n-> Discord is not started or not installed\n-> The application ID is invalid (only if the mode custom is enabled.)\n--> If the error keeps existing please create an issue on GitHub")
         return
