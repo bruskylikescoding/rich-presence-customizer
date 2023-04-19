@@ -39,13 +39,56 @@ If you are fine with having the default theme, you can follow these instructions
 6. Provide your second line.
 
 You will be asked if you want to add buttons. If you do not want you can type "no" and you are done. You can go to step ten.
-7. Select "y".
-8. Select the URL of your Button. It will be visible in your profile.
-9. Provide the URL for your Button. (ex.: google.com)
-You will be asked if you want to add another button. If you do, you can just do the same again.
+
+7. Select "y". 
+8. Select the URL of your Button. It will be visible in your profile. 
+9. Provide the URL for your Button. (ex.: google.com) 
+
+You will be asked if you want to add another button. If you do, you can just do the same again. 
 
 Congratulations! You have created your first config! Now we want to load it, so it will appear on your Discord Profile.
+
 10. Run the command "loadconfig"
 11. Enter the name, you have selected in step 3 for your configuration file. (watch out for upper and lower case)
 12. If no errors appear, congratulations! You should now see your customized rich presence! If you have encountered any errors, feel free to create an issue!
 
+## How to use (custom edition)
+
+You have the possibility to design your own rich presence. It's a bit more complicated, but i'm sure you'll make it :D
+
+1. Go to https://discord.com/developers
+2. Click on "New application", it's at the top right
+3. Provide a name and click on "create". The name will appear as the title, like "playing [the name]"
+4. Look at the left and select "Rich Presence".
+
+![tutorial_richpresence_1](https://user-images.githubusercontent.com/97536100/233164553-b61e2658-cd05-4a46-bef7-46bbe50f991c.png)
+
+5. In the sub menu you select "Art Assets". 
+6. At the bottom you are able to upload images. Click on add images and provide a name for your image. (Rich Presence supports two images, one lare and one small)
+7. When you are done, go to the left again and select "General information". Down there, you copy the "Application ID".
+
+![copy_application_ID](https://user-images.githubusercontent.com/97536100/233166038-08aee1f2-a910-4041-b551-3ba6e4cfd78b.png)
+
+8. Follow the instructions at "Installation"
+9. Run the command "createconfig"
+10. Select a name for your config. (Remember it, you will need it to load your configuration later.)
+11. Set the mode to "custom" by typing "custom" (omg)
+12. Provide your application ID, which you have copied in step 7
+13. Provide the name of your large image (leave empty if you don't want one)
+14. Do step 13 again, for the small image.
+15. Provide your first line of your rich presence. (It will appear below the title)
+16. Provide your second line.
+
+You will be asked if you want to add buttons. If you do not want you can type "no" and you are done. You can go to step ten.
+
+17. Select "y". 
+18. Select the URL of your Button. It will be visible in your profile. 
+19. Provide the URL for your Button. (ex.: google.com) 
+
+You will be asked if you want to add another button. If you do, you can just do the same again. 
+
+Congratulations! You have created your first config! Now we want to load it, so it will appear on your Discord Profile.
+
+20. Run the command "loadconfig"
+21. Enter the name, you have selected in step 3 for your configuration file. (watch out for upper and lower case)
+22. If no errors appear, congratulations! You should now see your customized rich presence! If you have encountered any errors, feel free to create an issue!
