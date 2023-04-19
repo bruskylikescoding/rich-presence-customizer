@@ -1,6 +1,0 @@
-name=dog
-mode=default
-firstline=Hi
-secondline=I like dogs
-button_1=0
-button_2=0
