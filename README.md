@@ -7,23 +7,16 @@ A easy to use tool, which allows you to customize your Discord Rich Presence, ma
 2. Run start.bat. It will install all the components needed.
 3. Have fun.
 
-
-
-## Commands
-
-Here is a list of commands. Pay attention to upper and lower case letters and do not anyting to them.  You can see them in the application using the "commands" command.
-```
-createconfig - Allows you to create a configuration file. In comparation with it, you don't have to customize your profile every time you start the application.
-loadconfig - Allows you to load a config you have created. Pay attention to upper and lower case letters.
-defaultconfig - Allows you to set a configuration file as the default option. It will be automatically loaded, everytime you start the application.
-commands - Shows you a list of commands.
-clear - Clears the console. For those who love order :)
-exit - Stops the application :(
-```
-
 ## How to use
 
+In Discord, Rich Presences require a application. So, if you want to (really) customize your Rich Presence, you have to create one. If you don't want to create one, we have created one for you :). It will look something like this:
 
+![defaulttheme](https://user-images.githubusercontent.com/97536100/233160426-676cf07f-4c86-4590-9f65-643d38c50569.PNG)
+
+Like you haven seen in the picture above, in your profile always appears "plays Customized" and you are not able to change the images at the left side.
+
+If you are fine with that you can follow the instructions at "How to use (default edition)". 
+If you want to create your own application, you can follow the instructions at "How to use (custom edition)"
 
 ## How to use (default edition)
 
@@ -92,3 +85,15 @@ Congratulations! You have created your first config! Now we want to load it, so 
 20. Run the command "loadconfig"
 21. Enter the name, you have selected in step 3 for your configuration file. (watch out for upper and lower case)
 22. If no errors appear, congratulations! You should now see your customized rich presence! If you have encountered any errors, feel free to create an issue!
+
+## Commands
+
+Here is a list of commands. Pay attention to upper and lower case letters and do not anyting to them.  You can see them in the application using the "commands" command.
+```
+createconfig - Allows you to create a configuration file. In comparation with it, you don't have to customize your profile every time you start the application.
+loadconfig - Allows you to load a config you have created. Pay attention to upper and lower case letters.
+defaultconfig - Allows you to set a configuration file as the default option. It will be automatically loaded, everytime you start the application.
+commands - Shows you a list of commands.
+clear - Clears the console. For those who love order :)
+exit - Stops the application :(
+```
