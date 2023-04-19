@@ -1,10 +1,33 @@
 from pypresence import Presence
 import time
 import os
-import os.path
 import traceback
 
-rpc = Presence("1097539948648878223")
+globalrpc = None
+
+def saveinconfig(config_path, string, value):
+    lines = []
+    added = False
+    if(not os.path.exists("configs/" + config_path)):
+        f = open("configs/" + config_path, "x")
+        f.close()
+    with open("configs/" + config_path) as f:
+        for line in f:
+            if(line.startswith(string)):
+                lines.append(string + "=" + value + "\n")
+                added = True
+            else:
+                lines.append(line)
+        if not added:
+                lines.append(string + "=" + value + "\n")
+    
+    f = open("configs/" + config_path, "w")
+    f.writelines(lines)
+    f.close()
+
+def deleteconfig(config_name):
+    if(configexists(config_name)):
+        os.remove("configs/" + config_name + ".txt")
 
 def getfromconfig(config_path, string):
     with open("configs/" + config_path) as f:
@@ -30,16 +53,21 @@ def configexists(config_name):
 
 def createconfig():
     name = input("Enter config name -> ")
-    firstline = input("Input the first line of your rich presence ->")
-    secondline = input("Input the second line of your rich presence ->")
+    deleteconfig(name)
+    saveinconfig(name + ".txt", "name", name)
+    mode = input("Enter the mode (default, custom [Custom allows you to use custom Discord Application. You need a Application ID. Please see the docs for more information.]) -> ")
+    saveinconfig(name + ".txt", "mode", mode)
+    if(mode == "custom"):
+        saveinconfig(name + ".txt", "id", input("Enter the Application ID -> "))
+        saveinconfig(name + ".txt", "big_image", input("Enter the name of the attachment, which shell be used for the big image -> "))
+        saveinconfig(name + ".txt", "small_image", input("Enter the name of the attachment, which shell be used for the small image -> "))
+    
+    saveinconfig(name + ".txt", "firstline", input("Input the first line of your rich presence ->"))
+    saveinconfig(name + ".txt", "secondline", input("Input the second line of your rich presence ->"))
     if not os.path.exists("configs"):
         os.makedirs("configs")
     try:
-        f = open("configs/" + name + ".txt", "w")
-        f.write("firstline=" + firstline + "\nsecondline="+ secondline +"")
-        f.close()
         prompt = input("Want to add some buttons (y/n) -> ")
-        f = open("configs/" + name + ".txt", "a")
         if(prompt == "y"):
             button_label = input("Enter the text of your button -> ")
             button_url = input("Enter the URL of your button -> ")
@@ -49,7 +77,9 @@ def createconfig():
                 return
             if(not button_url.startswith("http")):
                 button_url = "http://" + button_url
-            f.write("\nbutton_1=1\nbutton_1_label=" + button_label +"\nbutton_1_url=" + button_url + "")
+            saveinconfig(name + ".txt", "button_1", "1")
+            saveinconfig(name + ".txt", "button_1_label", button_label)
+            saveinconfig(name + ".txt", "button_1_url", button_url)
             if(prompt == "y"):
                 button_label = input("Enter the text of your button -> ")
                 button_url = input("Enter the URL of your button -> ")
@@ -58,22 +88,51 @@ def createconfig():
                 if(button_url == "" or button_label == "" or button_url == None or button_label == None):
                     print("The values cannot be empty! Please retry!")
                     return
-                f.write("\nbutton_2=1\nbutton_2_label=" + button_label +"\nbutton_2_url=" + button_url + "")
+                saveinconfig(name + ".txt", "button_2", "1")
+                saveinconfig(name + ".txt", "button_2_label", button_label)
+                saveinconfig(name + ".txt", "button_2_url", button_url)
             else:
-                f.write("\nbutton_2=0")
+                saveinconfig(name + ".txt", "button_2", "0")
 
         else:
-            f.write("\nbutton_1=0\nbutton_2=0")
-        f.close()
+            saveinconfig(name + ".txt", "button_1", "0")
+            saveinconfig(name + ".txt", "button_2", "0")
         print("Config created!")
-    except:
+    except Exception as e:
+        print(e)
         print("An error occured. Please confirm that all the values are given and in correct form.")
 
 def loadconfig(config_name):
+    global globalrpc
+    if(not globalrpc == None):
+        Presence.clear(globalrpc)
+        Presence.close(globalrpc)
+    
+    mode = getfromconfig(config_name + ".txt", "mode")
+    big_image = ""
+    small_image = ""
     try:
-        rpc.clear()
+        match mode:
+            case "default":
+                rpc = Presence("1097539948648878223")
+                big_image = "big"
+                small_image = "small"
+            case "custom":
+                rpc = Presence(str(getfromconfig(config_name + ".txt", "id")))
+                big_image = getfromconfig(config_name + ".txt","big_image")
+                small_image = getfromconfig(config_name + ".txt","small_image")
+                if(big_image == ""):
+                    big_image = "gommemode"
+                if(small_image == ""):
+                    small_image = "gommemode"
+            case __:
+                print("There is no use mode set for this config. Using default mode.")
+                rpc = Presence("1097539948648878223")
     except:
-        None
+        print("An error occured. Possible reasons:\n-> Discord is not started or not installed\n-> The application ID is invalid (only if the mode custom is enabled.)\n--> If the error keeps existing please create an issue on GitHub")
+        return
+    
+    globalrpc = rpc
     try:
         firstline = getfromconfig(config_name + ".txt", "firstline")
         secondline = getfromconfig(config_name + ".txt", "secondline")
@@ -90,10 +149,10 @@ def loadconfig(config_name):
             rpc.update(
                 state=secondline,
                     details=firstline,
-                    large_image="mein_projekt", 
+                    large_image=big_image, 
                     start=time.time(),
                     large_text="Discord Rich Presence Customizer by Brusky", 
-                    small_image="download", 
+                    small_image=small_image, 
                     small_text="Get the feature at brusky.net/rich-presence", 
                 buttons=[{"label": button_1_label, "url": button_1_url}, {"label": button_2_label, "url": button_2_url}]
             )
@@ -101,10 +160,10 @@ def loadconfig(config_name):
             rpc.update(
                 state=secondline,
                     details=firstline,
-                    large_image="mein_projekt", 
+                    large_image=big_image, 
                     start=time.time(),
                     large_text="Discord Rich Presence Customizer by Brusky", 
-                    small_image="download", 
+                    small_image=small_image, 
                     small_text="Get the feature at brusky.net/rich-presence", 
                 buttons=[{"label": button_1_label, "url": button_1_url}]
             )
@@ -112,15 +171,27 @@ def loadconfig(config_name):
             rpc.update(
                 state=secondline,
                     details=firstline,
-                    large_image="mein_projekt", 
+                    large_image=big_image, 
                     start=time.time(),
                     large_text="Discord Rich Presence Customizer by Brusky", 
-                    small_image="download", 
+                    small_image=small_image, 
                     small_text="Get the feature at brusky.net/rich-presence", 
             buttons=[{"label": button_2_label, "url": button_2_url}]
         )
+        else:
+           rpc.update(
+                state=secondline,
+                    details=firstline,
+                    large_image=big_image, 
+                    start=time.time(),
+                    large_text="Discord Rich Presence Customizer by Brusky", 
+                    small_image=small_image, 
+                    small_text="Get the feature at brusky.net/rich-presence"
+        ) 
         print("Connected to Discord.")
-    except:
+        return rpc
+    except Exception as e:
+        print(e)
         print("There was an error loading this config. Please try again. If the error keeps occuring, please create an issue on GitHub")
 
 def commandinput():
@@ -134,9 +205,6 @@ def commandinput():
             loadconfig(configname)
         case "defaultconfig":
             setdefaultconfig()
-        case "stop":
-            rpc.close()
-            print("Disconnected from Discord.")
         case "commands":
             print("createconfig - creates a configuration file\nloadconfig - loades a configuration file\ndefaultconfig - applies a default config, which is loaded, when you start the program\nstop - Cancels the connection to discord.\nexit - Exit the program")
         case "exit":
@@ -147,10 +215,8 @@ def commandinput():
             print("Unknown command. Type commands for a list of commands")
     if(not exit):
         commandinput()
+
 if(os.path.exists("configs/config.yml")):
-    with open("configs/config.yml") as f:
-            for line in f:
-                split = line.replace("\n", "").split("=")
-                if(split[0] == "def_config" and split[1] != "none"):
-                    loadconfig(split[1])
+    if(getfromconfig("config.yml", "def_config") != "none"):
+        loadconfig(getfromconfig("config.yml", "def_config"))
 commandinput()
