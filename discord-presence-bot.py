@@ -108,7 +108,9 @@ def loadconfig(config_name):
     if(not globalrpc == None):
         Presence.clear(globalrpc)
         Presence.close(globalrpc)
-    
+    if(not configexists(config_name)):
+        print("That config does not exist")
+        return
     mode = getfromconfig(config_name + ".txt", "mode")
     big_image = ""
     small_image = ""
