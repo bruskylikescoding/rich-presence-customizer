@@ -36,6 +36,7 @@ def getfromconfig(config_path, string):
             line2 = line.replace("\n", "").split("=")
             if(line2[0] == string):
                 return line2[1]
+    f.close()
 
 def setdefaultconfig():
     config = input("Enter the config name -> ")
@@ -45,6 +46,7 @@ def setdefaultconfig():
         print("Set default config to " + config)
     else:
         print("Config does not exist.")
+    f.close()
 
 def configexists(config_name):
     if(os.path.exists("configs/" + config_name + ".txt")):
@@ -100,17 +102,18 @@ def createconfig():
             saveinconfig(name + ".txt", "button_2", "0")
         print("Config created!")
     except Exception as e:
-        print(e)
         print("An error occured. Please confirm that all the values are given and in correct form.")
 
 def loadconfig(config_name):
     global globalrpc
-    if(not globalrpc == None):
-        Presence.clear(globalrpc)
-        Presence.close(globalrpc)
     if(not configexists(config_name)):
         print("That config does not exist")
         return
+
+    if(not globalrpc == None):
+        Presence.clear(globalrpc)
+        Presence.close(globalrpc)
+    
     mode = getfromconfig(config_name + ".txt", "mode")
     big_image = ""
     small_image = ""
